@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: scheduler-configmap
+data:
+  REDIS_URI: redis://:${REDIS_PASSWORD}@redis
+  JOB_CONCURRENCY: "25"
+  HOLODEX_MAX_UPCOMING_HOURS: "2"
+  CACHE_PATH: /cache
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scheduler-deployment
+  labels:
+    app: scheduler
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: scheduler
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: scheduler
+    spec:
+      containers:
+        - image: pkg.uechi.io/honeybee
+          name: scheduler
+          args:
+            - node
+            - lib/index.js
+            - scheduler
+          envFrom:
+            - configMapRef:
+                name: scheduler-configmap
+          env:
+            - name: HOLODEX_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: holodex
+                  key: apiKey
+          resources: {}
+      restartPolicy: Always

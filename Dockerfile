@@ -22,4 +22,4 @@ WORKDIR /app/tf
 RUN terraform init -no-color -input=false
 WORKDIR /app
 
-CMD ["honeybee", "worker"]
+CMD ["node", "lib/index.js", "worker"]

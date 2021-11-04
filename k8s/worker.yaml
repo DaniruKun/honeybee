@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: worker-configmap
+data:
+  REDIS_URI: redis://:${REDIS_PASSWORD}@redis
+  MONGO_URI: mongodb://${MONGO_WORKER_USERNAME}:${MONGO_WORKER_PASSWORD}@mongo/${MONGO_DATABASE}
+  JOB_CONCURRENCY: "25"
+  DEBUG: masterchat
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: worker-daemonset
+  labels:
+    app: worker
+spec:
+  selector:
+    matchLabels:
+      app: worker
+  template:
+    metadata:
+      labels:
+        app: worker
+    spec:
+      containers:
+        - image: pkg.uechi.io/honeybee
+          name: worker
+          envFrom:
+            - configMapRef:
+                name: worker-configmap
+          resources: {}
+      restartPolicy: Always

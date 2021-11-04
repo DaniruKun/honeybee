@@ -78,3 +78,17 @@ db.chats.aggregate([
   { $sort: { timestamp: 1 } },
 ]);
 ```
+
+## K8s
+
+```bash
+minikube start
+minikube addons enable registry-creds
+
+skaffold init --compose-file docker-compose.yml
+skaffold build
+
+skaffold dev --port-forward -p dev
+
+minikube dashboard
+```

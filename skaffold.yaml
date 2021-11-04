@@ -1,0 +1,24 @@
+apiVersion: skaffold/v2beta24
+kind: Config
+metadata:
+  name: honeybee
+build:
+  artifacts:
+    - image: pkg.uechi.io/honeybee
+      docker:
+        dockerfile: Dockerfile
+deploy:
+  kubectl:
+    manifests:
+      - k8s/*.yaml
+  kubeContext: minikube
+profiles:
+  - name: dev
+    build:
+      artifacts:
+        - image: pkg.uechi.io/honeybee
+          sync:
+            infer:
+              - "lib/**/*.js"
+          docker:
+            dockerfile: Dockerfile
