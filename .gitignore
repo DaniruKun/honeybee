@@ -3,6 +3,7 @@
 /keys
 __nock-fixtures__
 .env
+.env.secrets
 .envrc
 .vscode
 /data*

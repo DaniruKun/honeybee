@@ -24,6 +24,8 @@ spec:
   selector:
     matchLabels:
       app: redis
+  nodeSelector:
+    kubernetes.io/hostname: takos
   template:
     metadata:
       labels:

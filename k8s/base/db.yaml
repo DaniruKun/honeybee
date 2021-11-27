@@ -25,6 +25,8 @@ spec:
   selector:
     matchLabels:
       app: db
+  nodeSelector:
+    kubernetes.io/hostname: takos
   template:
     metadata:
       labels:
@@ -42,13 +44,13 @@ spec:
             - name: MONGO_INITDB_ROOT_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: db-secrets
-                  key: username
+                  name: secrets
+                  key: MONGO_INITDB_ROOT_USERNAME
             - name: MONGO_INITDB_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: db-secrets
-                  key: password
+                  name: secrets
+                  key: MONGO_INITDB_ROOT_PASSWORD
           resources: {}
       restartPolicy: Always
       volumes:
