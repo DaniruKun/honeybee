@@ -161,3 +161,10 @@ docker-compose exec redpanda rpk topic consume --offset end chats
 # Delete
 docker-compose exec redpanda rpk topic delete chats
 ```
+
+## Groonga
+
+```bash
+docker-compose exec groonga groonga -n /mnt/db/data.db
+docker-compose exec groonga groonga /mnt/db/data.db status
+```
